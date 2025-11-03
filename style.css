@@ -1,0 +1,158 @@
+*{
+    margin: 0;
+    padding: 0;
+    
+
+}
+body{
+    background-color: #88AB8E;
+    color: black;
+}
+
+.title, .guest-name{
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    color: white;
+
+}
+.subtitle{
+    text-align: center;
+    font-family: fantasy;
+    margin-bottom: 20px;
+    color: rgb(25, 72, 6);
+}
+.title{
+    padding: 10px;
+    font-family: 'Brush Script MT', cursive;
+    font-size: 3rem;
+    text-decoration: underline;
+    color: #025025;
+}
+.mood-tracker,.energy-lvl{
+    margin-left: auto;
+    margin-right: auto;
+    background-color:#F2F1EB ;
+    width: 50%;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+.progress-bar{      
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold; 
+
+}
+.mood-check-in{
+    text-align: center;
+    background-color: #EEE7DA;
+    padding: 55px;
+
+}
+.bar{
+    font-size: 40px;
+}
+
+#signup{
+    background-color: #F2F1EB;
+    padding-bottom: 40px;
+    text-decoration-line: underline;
+}
+
+.login-pg{
+    font-family: Arial, sans-serif;
+    background-color: #EEE7DA;
+    padding: 10vh;
+
+}
+
+
+form{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.login-form{
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    text-align: center;
+    margin-bottom: 60px;
+    line-height: 15px;
+    background-color: #F2F1EB;
+    padding: 7vh;
+    margin-top: 40px;
+    box-shadow: 4px 4px 10px rgba(0.2, 0.2, 0, 0.2);
+}
+form input{
+    margin: 10px;
+    padding: 4px;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+form div{
+    margin: 20px;
+    padding: 7px;
+    background-color: rgba(255, 255, 255, 0.612);
+    border: 1px solid gray;
+    border-radius:5px ;
+    
+}
+
+.login, .guest{
+    background-color: #EEE7DA;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+#signup-btn,.btn-back,.btn-next{
+    background-color: #88AB8E;
+    color: white;
+    padding: 7px;
+    font-size: 0.9rem;
+    border-radius: 40%;
+    cursor: pointer;
+
+}
+.btn-back,.btn-next{
+    border-radius: 8px;
+}
+#signup-btn:hover,.btn-back:hover,.btn-next:hover{
+    background-color: #AFC8AD;
+    color: black;
+}
+.btn{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.footer {
+  background-color: #88AB8E;  
+  color: #eee;             
+  text-align: center;
+  padding: 15px 10px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.footer h4 {
+  margin: 12px 0 8px;
+  font-size: 14px;
+  color: #ffcc00;  
+}
+
+.footer ul {
+  list-style: none;
+}
+
+
+

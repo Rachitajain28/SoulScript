@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoulScript</title>
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+    <h2 class="guest-name">Welcome, Guest!</h2>
+    <div class="progress-bar">
+        <h3>Step 1 of 3</h3>
+    <progress class="bar" value="1" max="3"></progress>
+    </div>
+    
+    <div class="mood-check-in">
+        <u><h2>Mood Check-In</h2></u>
+        <br>
+        <p>We care about your well-being. Please take a moment to share how you're feeling today.</p>
+        <br><br><br>
+    <div class="mood-tracker">
+        <h3>How are you feeling right now?</h3>
+        <br>
+        <h4>Select your mood! </h4>
+        <form class="emoji-selector">
+            <div class="emoji-container">
+            <input type="radio" id="very-happy" name="mood" value="5">
+            <label for="very-happy">😁 Very-happy</label>
+
+            <input type="radio" id="happy" name="mood" value="4">
+            <label for="happy">☺️ Happy</label>
+
+            <input type="radio" id="neutral" name="mood" value="3">
+            <label for="neutral">🙂 Neutral</label>
+
+            <input type="radio" id="sad" name="mood" value="2">
+            <label for="sad">☹️ Sad</label>
+
+            <input type="radio" id="very-sad" name="mood" value="1">
+            <label for="very-sad">😢 Very-sad</label>
+            </div>
+        
+    </form>
+    </div >
+    <div class="energy-lvl">
+        <h3>How much energy do you feel today?</h3>
+        <br>
+
+         <label for="energy">Energy Level   :</label>
+        <br><br>
+        Low🫠<input type="range" id="energy" name="energy" min="1" max="10" value="5" step="1" > 😃High 
+    </div>
+    <div class="btn">
+  <button onclick="window.location.href='/index.html'" class="btn-back">← Back</button>
+  <button onclick="window.location.href='/ques.html'" class="btn-next">Next →</button>
+  </div>
+
+</div>
+<footer class="footer">
+  <div class="footer-content">
+    <p>
+      ⚠️ Disclaimer: “This page offers guidance and reflection, but true healing may need expert support.”  
+    </p>
+    <p>© 2025, SoulScriptor. All rights reserved. 🌐 www.soulscript.in</p>
+    <div class="helplines">
+      <h4>You're Not Alone - Reach Out📞 </h4>
+      <ul>
+        <li>Vandrevala Foundation Helpline: 1860 266 2345 | 1800 233 3330</li>
+        <li>NIMHANS Helpline: 080-4611 0007</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+<script src="result.js"></script>
+<script src="server.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
