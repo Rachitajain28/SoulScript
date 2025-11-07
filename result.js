@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const entrySchema = new mongoose.Schema({
   mood: String,
   energy: Number,
-  questions: Object,
+  questions: Number,
   journalEntry: String,
   score: Number,
   createdAt: { type: Date, default: Date.now }

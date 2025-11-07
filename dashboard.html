@@ -3,22 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SoulScript - Dashboard</title>
+  <title>Dashboard | SoulScript</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <h2>📊 Your Personalized Insights</h2>
-  <div class="results">
-    <p id="resultMood"></p>
-    <p id="resultEnergy"></p>
-    <p id="resultJournal"></p>
-    <h3 id="resultSuggestion"></h3>
+<link rel="stylesheet" href="dashboard.css">
+<body class="dashboard-page">
+  <h1 class="dtitle">🌿 SoulScript Emotional Summary</h1>
+  <div class="dashboard">
+    <div class="result-box">
+      <h2>Emotional Index:</h2> <span id="emotionalIndex">--</span>%
+    <div class="meter-container">
+      <div class="meter-fill" id="meter"></div>
+    </div>
+    <h3>Status: <span id="emotionalLevel">--</span></h3>
+    </div>
+    
+    <p id="description">--</p>
+    <h4>💡 Personalized Suggestion:</h4>
+    
+    <p id="suggestions">--</p>
   </div>
 
-  <footer class="footer">
-    <p>⚠️ Disclaimer: This tool is for guidance only, not a substitute for professional help.</p>
+  <button onclick="window.location.href='index.html'">Return Home</button>
+  <footer>
+    © 2025 SoulScript | “Listening to your soul, guiding your mind.”
   </footer>
-
   <script src="app.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Small animation for meter fill
+    document.addEventListener("DOMContentLoaded", () => {
+      const EI = parseFloat(localStorage.getItem("emotionalIndex") || 0);
+      const meter = document.getElementById("meter");
+      meter.style.width = `${EI * 100}%`;
+
+      if (EI >= 0.75) meter.style.background = "#22c55e";
+      else if (EI >= 0.5) meter.style.background = "#facc15";
+      else if (EI >= 0.25) meter.style.background = "#f97316";
+      else meter.style.background = "#ef4444";
+    });
+  </script>
 </body>
 </html>
