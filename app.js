@@ -67,6 +67,8 @@ function analyzeJournal() {
   sentimentScore = Math.max(0, Math.min(1, sentimentScore));
 
   localStorage.setItem("sentimentScore", sentimentScore);
+localStorage.setItem("journalText", text);
+
   window.location.href = "dashboard.html";
 }
 
@@ -95,11 +97,12 @@ async function sendToBackend() {
   const mood = localStorage.getItem("mood");
   const energy = localStorage.getItem("energy");
   const questions = localStorage.getItem("questionScore"); // If you want to send detailed answers, adjust this
-  const journalEntry = localStorage.getItem("sentimentScore"); // If you want the full text, store it separately
+  const journalEntry = localStorage.getItem("journalText");
+ // If you want the full text, store it separately
   const score = localStorage.getItem("emotionalIndex");
 
   try {
-    const res = await fetch("http://localhost:5000/api/submit", {
+    const res = await fetch("http://localhost:5050/api/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ mood, energy, questions, journalEntry, score })
@@ -120,23 +123,37 @@ function showResults() {
   let color = "";
 
   if (EI >= 0.75) {
-    level = "Low Depression Risk 😊";
-    description = "Positive emotions and stable energy — maintain your self-care habits!";
+    level = "🌿 Low Depression Risk";
+    description = "You’re showing positive emotions and balanced energy. Your current state reflects strong emotional regulation and self-awareness.";
     color = "#2ecc71";
-    suggestion = "You’re emotionally stable! Continue journaling gratitude and staying connected with loved ones.";
+    suggestion = ["✅ Keep up your good mental health habits",
+"🧘 Continue journaling and mindfulness routines.",
+"🤝 Stay connected with friends or loved ones.",
+"🎯 Try small goals that keep your motivation high."];
   } else if (EI >= 0.5) {
-    level = "Mild Depression Risk 🙂";
-    description = "Occasional stress or low energy — try relaxation and mindful breathing.";
-    suggestion = "You're in a balanced state but may have occasional dips. Try music, meditation, or light activity.";
+    level = "🌤 Mild Depression Risk";
+    description = "You’re doing well, but showing signs of occasional stress or fatigue. Your emotions are mostly stable but may fluctuate slightly.";
+    suggestion = ["💬 Take short breaks to recharge.",
+"🌱 Engage in hobbies that calm you.",
+"😌 Practice relaxation or breathing exercises.",
+"🕰 Reflect in your journal on triggers and positives."];
     color = "#f1c40f";
   } else if (EI >= 0.25) {
-    level = "Moderate Depression Risk 😐";
-    description = "Signs of persistent anxiety or negativity — consider regular journaling or counseling.";
+    level = "😐 Moderate Depression Risk ";
+    description = "Your responses show persistent anxiety or negative patterns. You may be emotionally drained or struggling with low mood.";
     color = "#e67e22";
-  }else {
-    level = "High Depression Risk 😔";
-    suggestion = "You seem emotionally low. Try deep breathing, journaling positive moments, or talking to a counselor.";
-    description = "Severe sadness or distress detected — seek help, reach out to loved ones, or talk to a counselor.";
+    suggestion = ["🌼 Try daily affirmations and structured journaling.",
+"🧘 Practice 10–15 min mindfulness sessions.",
+"📅 Maintain a consistent sleep schedule.",
+"🤗 Consider reaching out to a friend, family member, or counselor"];
+  } else {
+    level = "🛑 High Depression Risk";
+    suggestion = ["❤️ Please prioritize your well-being.",
+"📞 Reach out to a mental health helpline or therapist given below",
+"🪞Use your journal to express emotions safely.",
+"🚶 Engage in gentle self-care like walking or listening to calming music.",
+"⚠️ Avoid isolation — seek human connection and professional support."];
+    description = "Your emotional patterns reflect deep sadness or significant distress. It may be difficult to maintain motivation or optimism right now.";
     color = "#e74c3c";
   }
 

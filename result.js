@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const entrySchema = new mongoose.Schema({
-  mood: String,
+  mood: Number,
   energy: Number,
   questions: Number,
   journalEntry: String,
@@ -9,4 +9,4 @@ const entrySchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model("Entry", entrySchema);
+module.exports = mongoose.model("entries", entrySchema);
