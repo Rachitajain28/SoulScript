@@ -1,9 +1,6 @@
-// 🌿 SoulScript - Complete Emotional Index System (Final Research Version)
-// This file handles all logic: mood → energy → questionnaire → journal → emotional index
 
-//-------------------------------------------------------------
-// 🧩 PAGE 1: mood.html → Save Mood and Energy
-//-------------------------------------------------------------
+// PAGE 1: mood.html → Save Mood and Energy
+
 function saveMoodEnergy() {
   const mood = document.querySelector('input[name="mood"]:checked')?.value;
   const energy = document.getElementById("energy")?.value;
@@ -13,17 +10,15 @@ function saveMoodEnergy() {
     return;
   }
 
-  // Store mood and energy in localStorage for later use
   localStorage.setItem("mood", mood);
   localStorage.setItem("energy", energy);
 
-  // Move to next page (questions)
   window.location.href = "ques.html";
 }
 
-//-------------------------------------------------------------
-// 🧠 PAGE 2: ques.html → Save Guided Question Responses
-//-------------------------------------------------------------
+
+//PAGE 2: ques.html → Save Guided Question Responses
+
 function saveQuestions() {
   const responses = document.querySelectorAll(".quiz input[type='radio']:checked");
   if (responses.length < 10) {
@@ -36,16 +31,13 @@ function saveQuestions() {
     if (res.value === "Yes") yesCount++;
   });
 
-  // Store anxiety-related yes-count
   localStorage.setItem("questionScore", yesCount);
 
-  // Move to journal writing page
   window.location.href = "journal.html";
 }
 
-//-------------------------------------------------------------
-// ✍️ PAGE 3: journal.html → Analyze Journal Sentiment (Local)
-//-------------------------------------------------------------
+// PAGE 3: journal.html → Analyze Journal Sentiment
+
 function analyzeJournal() {
   const text = document.getElementById("textBox").value.toLowerCase().trim();
   if (!text) {
@@ -72,9 +64,9 @@ localStorage.setItem("journalText", text);
   window.location.href = "dashboard.html";
 }
 
-//-------------------------------------------------------------
-// 📊 PAGE 4: dashboard.html → Calculate & Display Emotional Index
-//-------------------------------------------------------------
+
+// PAGE 4: dashboard.html → Calculate & Display Emotional Index
+
 function calculateEmotionalIndex() {
   const mood = parseInt(localStorage.getItem("mood")) || 3;
   const energy = parseInt(localStorage.getItem("energy")) || 5;
@@ -85,9 +77,9 @@ function calculateEmotionalIndex() {
   // Weighted contributions (research-based)
   const M = mood / 5;
   const E = energy / 10;
-  const Q = (10 - questionScore) / 10; // more Yes → lower score
-  const S = sentimentScore; // already normalized
-  // Combine and normalize 0–100
+  const Q = (10 - questionScore) / 10; 
+  const S = sentimentScore; 
+  
   const EI = (0.3 * M) + (0.2 * E) + (0.3 * Q) + (0.2 * S);
   localStorage.setItem("emotionalIndex", EI);
   return EI;
@@ -96,9 +88,8 @@ function calculateEmotionalIndex() {
 async function sendToBackend() {
   const mood = localStorage.getItem("mood");
   const energy = localStorage.getItem("energy");
-  const questions = localStorage.getItem("questionScore"); // If you want to send detailed answers, adjust this
+  const questions = localStorage.getItem("questionScore"); 
   const journalEntry = localStorage.getItem("journalText");
- // If you want the full text, store it separately
   const score = localStorage.getItem("emotionalIndex");
 
   try {
@@ -157,7 +148,6 @@ function showResults() {
     color = "#e74c3c";
   }
 
-  // Display data
   document.getElementById("emotionalIndex").textContent = (EI * 100).toFixed(1);
   document.getElementById("emotionalIndex").style.color = color;
   document.getElementById("emotionalLevel").textContent = level;
@@ -166,32 +156,28 @@ function showResults() {
   sendToBackend();
 }
 
-//-------------------------------------------------------------
-// 🚀 EXECUTION LOGIC — Runs on Each Page Automatically
-//-------------------------------------------------------------
+
+// EXECUTION LOGIC
+
 document.addEventListener("DOMContentLoaded", () => {
   const path = window.location.pathname;
 
   if (path.includes("mood.html")) {
-    // Mood Page → button triggers saveMoodEnergy()
     document.querySelector(".btn-next")?.addEventListener("click", saveMoodEnergy);
   } 
   else if (path.includes("ques.html")) {
-    // Questionnaire Page → button triggers saveQuestions()
     document.getElementById("form-submit")?.addEventListener("click", e => {
       e.preventDefault();
       saveQuestions();
     });
   } 
   else if (path.includes("journal.html")) {
-    // Journal Page → button triggers analyzeJournal()
     document.getElementById("text-submit")?.addEventListener("click", e => {
       e.preventDefault();
       analyzeJournal();
     });
   } 
   else if (path.includes("dashboard.html")) {
-    // Dashboard → automatically show results
     showResults();
   }
 });
