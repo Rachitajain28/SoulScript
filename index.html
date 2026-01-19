@@ -1,61 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SoulScript</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoulScript</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<link rel="stylesheet" href="style.css">
-<body>
-    <p class="title">SoulScript
 
-        <h4 class="subtitle">🍀 "Listening to your soul, guiding your mind." 🍀</h4>
+<body>
+
+<p class="title">
+  SoulScript
+  <h4 class="subtitle">🍀 "Listening to your soul, guiding your mind." 🍀</h4>
+</p>
+
+<div class="login-pg">
+
+  <!-- SIGN UP FORM -->
+  <div class="login-form" id="signupBox">
+    <h2>Sign Up</h2>
+
+    <form id="signupForm">
+      <div>
+        <label>Username:</label>
+        <input type="text" id="name" required />
+      </div>
+
+      <div>
+        <label>Email:</label>
+        <input type="email" id="email" required />
+      </div>
+
+      <div>
+        <label>Password:</label>
+        <input type="password" id="password" required />
+      </div>
+
+      <button type="submit">Sign Up</button>
+    </form>
+
+    <p class="switch">
+      Already have an account?
+      <a href="#" onclick="showLogin()">Login</a>
     </p>
-    <div class="login-pg">
-        <div class="login-form">
-            <h2 id="signup">Sign Up</h2>
-            <form action="action.php" method="post">
-                <div id="name">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" placeholder="Username" required>
-                </div>
-                <div id="eml">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" placeholder="Email" required>
-                </div>
-                <div id="pswd">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" placeholder="Password" required>
-                </div>
-                <button onclick="window.location.href='/guest.html'" id="signup-btn" type="submit">Sign Up</button>
-            </form>
-        </div>
-            <div class="login">
-            <p>Already have an account? <a href="/guest.html">Log in</a></p>
-        </div>
-        <br>
-    
-        <div class="guest">
-        <p>Or continue as a <a href="/guest.html">Guest</a></p>
-        </div>    
-    </div>
-    <footer class="footer">
+  </div>
+
+  <!-- LOGIN FORM -->
+  <div class="login-form" id="loginBox" style="display:none;">
+    <h2>Login</h2>
+
+    <form id="loginForm">
+      <div>
+        <label>Email:</label>
+        <input type="email" id="loginEmail" required />
+      </div>
+
+      <div>
+        <label>Password:</label>
+        <input type="password" id="loginPassword" required />
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <p class="switch">
+      New user?
+      <a href="#" onclick="showSignup()">Sign Up</a>
+    </p>
+  </div>
+
+  <div class="guest">
+    <p>Or continue as a <a href="guest.html">Guest</a></p>
+  </div>
+
+</div>
+
+<footer class="footer">
   <div class="footer-content">
-    <p>
-      ⚠️ Disclaimer: “This page offers guidance and reflection, but true healing may need expert support.”  
-    </p>
-    <p>© 2025, SoulScriptor. All rights reserved. 🌐 www.soulscript.in</p>
-    <div class="helplines">
-      <h4>You're Not Alone - Reach Out📞 </h4>
-      <ul>
-        <li>Vandrevala Foundation Helpline: 1860 266 2345 | 1800 233 3330</li>
-        <li>NIMHANS Helpline: 080-4611 0007</li>
-      </ul>
-    </div>
+    <p>⚠️ Disclaimer: This platform does not replace professional care.</p>
+    <p>© 2025 SoulScript</p>
   </div>
 </footer>
-<script src="result.js"></script>
-<script src="server.js"></script>
+
 <script src="app.js"></script>
 
 </body>

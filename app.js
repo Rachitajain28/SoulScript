@@ -95,7 +95,9 @@ async function sendToBackend() {
   try {
     const res = await fetch("http://localhost:5050/api/submit", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+    "Content-Type": "application/json",
+  },
       body: JSON.stringify({ mood, energy, questions, journalEntry, score })
     });
     const data = await res.json();
@@ -156,8 +158,84 @@ function showResults() {
   sendToBackend();
 }
 
+// Toggle UI
+function showLogin() {
+  document.getElementById("signupBox").style.display = "none";
+  document.getElementById("loginBox").style.display = "block";
+}
+
+function showSignup() {
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("signupBox").style.display = "block";
+}
 
 // EXECUTION LOGIC
+document.addEventListener("DOMContentLoaded", () => {
+  const signupForm = document.getElementById("signupForm");
+
+  if (signupForm) {
+    signupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const res = await fetch("http://localhost:5050/api/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await res.json();
+
+        alert(data.message);
+
+        
+        window.location.href = "guest.html";
+
+      } catch (err) {
+        console.error("Signup error:", err);
+        alert("Registration failed");
+      }
+    });
+  }
+});
+
+// LOGIN
+document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  try {
+    const res = await fetch("http://localhost:5050/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || "Login failed");
+      return;
+    }
+
+    localStorage.setItem("token", data.token);
+    alert("✅ Login successful");
+
+    window.location.href = "guest.html";
+
+  } catch (err) {
+    alert("❌ Server not reachable");
+  }
+});
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const path = window.location.pathname;
