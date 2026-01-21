@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -17,6 +17,9 @@
     </div>
     <h3>Status: <span id="emotionalLevel">--</span></h3>
     </div>
+
+
+
     <div class="analysis-section">
       <div class="descrip">
       <h4>Description:</h4><br>
@@ -49,7 +52,78 @@
     </div>
   </div>
 </footer>
+
+
   <script src="app.js"></script>
+
+  <script>
+    if (!localStorage.getItem("token")) {
+  alert("Please login first");
+  window.location.href = "index.html";
+}
+
+fetch("/api/history/mood", {
+  headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+})
+.then(res => res.json())
+.then(data => {
+  new Chart(document.getElementById("moodChart"), {
+    type: "bar",
+    data: {
+      labels: Object.keys(data),
+      datasets: [{
+        label: "Mood Count",
+        data: Object.values(data)
+      }]
+    }
+  });
+});
+
+fetch("/api/history/energy", {
+  headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+})
+.then(res => res.json())
+.then(data => {
+  new Chart(document.getElementById("energyChart"), {
+    type: "line",
+    data: {
+      labels: data.map(d => new Date(d.date).toLocaleDateString()),
+      datasets: [{
+        label: "Energy Level",
+        data: data.map(d => d.energy)
+      }]
+    }
+  });
+});
+
+
+async function loadChart() {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch("http://localhost:5050/api/history/emotional-index", {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+  const data = await res.json();
+
+  const ctx = document.getElementById("historyChart").getContext("2d");
+
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: data.map(d => d.date),
+      datasets: [{
+        label: "Emotional Index %",
+        data: data.map(d => d.value),
+        tension: 0.4
+      }]
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", loadChart);
+</script>
+
   <script>
     //meter color
     document.addEventListener("DOMContentLoaded", () => {
@@ -63,5 +137,172 @@
       else meter.style.background = "#ef4444";
     });
   </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | SoulScript</title>
+
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="dashboard.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="dashboard-page">
+
+<h1 class="dtitle">🌿 SoulScript Dashboard</h1>
+
+<div class="dashboard">
+
+  <!-- RESULT -->
+  <div class="result-box">
+    <h2>Emotional Index</h2>
+    <span id="emotionalIndex">--</span>%
+    <div class="meter-container">
+      <div class="meter-fill" id="meter"></div>
+    </div>
+    <h3>Status: <span id="emotionalLevel">--</span></h3>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div class="analysis-section">
+    <div>
+      <h4>Description</h4>
+      <p id="description">--</p>
+    </div>
+    <div>
+      <h4>💡 Personalized Suggestions</h4>
+      <p id="suggestions">--</p>
+    </div>
+  </div>
+
+  <div class="history-controls">
+    <button id="viewHistoryBtn">📊 View History</button>
+    <button class="return-home" onclick="location.href='index.html'">
+      Return Home
+    </button>
+  </div>
+</div>
+<script>
+    //meter color
+    document.addEventListener("DOMContentLoaded", () => {
+      const EI = parseFloat(localStorage.getItem("emotionalIndex") || 0);
+      const meter = document.getElementById("meter");
+      meter.style.width = `${EI * 100}%`;
+
+      if (EI >= 0.75) meter.style.background = "#22c55e";
+      else if (EI >= 0.5) meter.style.background = "#facc15";
+      else if (EI >= 0.25) meter.style.background = "#f97316";
+      else meter.style.background = "#ef4444";
+    });
+  </script>
+<!-- ================= HISTORY ================= -->
+<section id="historySection">
+
+  <h2>📊 Your Mental Health History</h2>
+
+  <div class="history-charts">
+    <canvas id="eiChart"></canvas>
+    <canvas id="moodChart"></canvas>
+    <canvas id="energyChart"></canvas>
+  </div>
+
+  <div class="history-entries" id="historyList"></div>
+
+</section>
+
+<footer class="footer">
+  <div class="footer-content">
+    <p>
+      ⚠️ Disclaimer: “This page offers guidance and reflection, but true healing may need expert support.”  
+    </p>
+    <p>© 2025, SoulScriptor. All rights reserved. 🌐 www.soulscript.in</p>
+    <div class="helplines">
+      <h4>You're Not Alone - Reach Out📞 </h4>
+      <ul>
+        <li>Vandrevala Foundation Helpline: 1860 266 2345 | 1800 233 3330</li>
+        <li>NIMHANS Helpline: 080-4611 0007</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+
+<script>
+if (!localStorage.getItem("token")) {
+  alert("Please login first");
+  location.href = "index.html";
+}
+
+let eiChart, moodChart, energyChart;
+
+document.getElementById("viewHistoryBtn").onclick = async () => {
+  document.getElementById("historySection").style.display = "block";
+
+  const token = localStorage.getItem("token");
+
+  const headers = { Authorization: `Bearer ${token}` };
+
+  const [ei, mood, energy, entries] = await Promise.all([
+    fetch("http://localhost:5050/api/history/emotional-index", { headers }).then(r => r.json()),
+    fetch("http://localhost:5050/api/history/mood", { headers }).then(r => r.json()),
+    fetch("http://localhost:5050/api/history/energy", { headers }).then(r => r.json()),
+    fetch("http://localhost:5050/api/history/all", { headers }).then(r => r.json())
+  ]);
+
+  eiChart?.destroy();
+  moodChart?.destroy();
+  energyChart?.destroy();
+
+  eiChart = new Chart(eiChartEl = document.getElementById("eiChart"), {
+    type: "line",
+    data: {
+      labels: ei.map(d => d.date),
+      datasets: [{ label: "Emotional Index %", data: ei.map(d => d.value), tension: 0.4 }]
+    }
+  });
+
+  moodChart = new Chart(document.getElementById("moodChart"), {
+    type: "bar",
+    data: {
+      labels: Object.keys(mood),
+      datasets: [{ label: "Mood Count", data: Object.values(mood) }]
+    }
+  });
+
+  energyChart = new Chart(document.getElementById("energyChart"), {
+    type: "line",
+    data: {
+      labels: energy.map(d => new Date(d.date).toLocaleDateString()),
+      datasets: [{ label: "Energy Level", data: energy.map(d => d.energy) }]
+    }
+  });
+
+  const list = document.getElementById("historyList");
+  list.innerHTML = "";
+
+  if (!entries.length) {
+    list.innerHTML = "<p class='no-history'>No previous entries found</p>";
+    return;
+  }
+
+  entries.forEach(e => {
+    list.innerHTML += `
+      <div class="history-entry">
+        <b>${new Date(e.createdAt).toDateString()}</b>
+        Mood: ${e.mood} | Energy: ${e.energy}<br>
+        Emotional Index: ${(e.score * 100).toFixed(1)}%
+        <i>${e.journalEntry}</i>
+      </div>
+    `;
+  });
+};
+</script>
+
 </body>
 </html>

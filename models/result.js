@@ -7,6 +7,7 @@ const entrySchema = new mongoose.Schema({
   questions: Number,
   journalEntry: String,
   score: Number,
+  sentimentScore: Number,
   createdAt: { type: Date, default: Date.now }
 });
 

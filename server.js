@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const Entry = require("./models/result");
+const jwt = require("jsonwebtoken");
 
 
 const app = express();
@@ -18,6 +19,19 @@ app.use(cors({
 app.use(bodyParser.json());
 
 app.use(express.json());
+
+function authMiddleware(req, res, next) {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "No token" });
+
+  try {
+    const decoded = jwt.verify(token, "SOULSCRIPT_SECRET");
+    req.userId = decoded.userId;
+    next();
+  } catch {
+    res.status(401).json({ message: "Invalid token" });
+  }
+}
 
 // Auth routes
 const authRoutes = require("./routes/auth");
@@ -41,7 +55,7 @@ mongoose.connection.once("open", () => {
 
 
 // API route
-app.post("/api/submit", async (req, res) => {
+app.post("/api/submit", authMiddleware, async (req, res) => {
   try {
     let { mood, energy, questions, journalEntry, score } = req.body;
 
@@ -54,11 +68,13 @@ app.post("/api/submit", async (req, res) => {
     console.log("Data Before Save:", { mood, energy, questions, journalEntry, score });
 
     const entry = new Entry({
+      userId: req.userId,
       mood: Number(mood),
       energy: Number(energy),
       questions: Number(questions),
       journalEntry,
-      score: Number(score)
+      score: Number(score),
+      sentimentScore: req.body.sentimentScore || 0.5
     });
     await entry.save();
 
@@ -70,6 +86,52 @@ app.post("/api/submit", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// ===== HISTORY APIs =====
+
+// Mood distribution
+app.get("/api/history/mood", authMiddleware, async (req, res) => {
+  const entries = await Entry.find({ userId: req.userId });
+  const moodCount = {};
+
+  entries.forEach(e => {
+    moodCount[e.mood] = (moodCount[e.mood] || 0) + 1;
+  });
+
+  res.json(moodCount);
+});
+
+// Energy over time
+app.get("/api/history/energy", authMiddleware, async (req, res) => {
+  const entries = await Entry.find({ userId: req.userId })
+    .sort({ createdAt: 1 });
+
+  res.json(entries.map(e => ({
+    date: e.createdAt,
+    energy: e.energy
+  })));
+});
+
+// Emotional Index history
+app.get("/api/history/emotional-index", authMiddleware, async (req, res) => {
+  const entries = await Entry.find({ userId: req.userId })
+    .sort({ createdAt: 1 });
+
+  res.json(entries.map(e => ({
+    date: e.createdAt.toISOString().split("T")[0],
+    value: Math.round(e.score * 100)
+  })));
+});
+
+// Full history list
+app.get("/api/history/all", authMiddleware, async (req, res) => {
+  const entries = await Entry.find({ userId: req.userId })
+    .sort({ createdAt: -1 });
+
+  res.json(entries);
+});
+
+
 
 
 //Starting server

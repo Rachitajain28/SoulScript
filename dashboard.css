@@ -120,4 +120,58 @@ body {
   list-style: none;
 }
 
+/* ============================= */
+/* VIEW HISTORY SECTION STYLES */
+/* ============================= */
+
+/* KEEP YOUR EXISTING CSS ABOVE */
+
+/* HISTORY SECTION */
+#historySection {
+  display: none;
+  margin: 60px auto;
+  padding: 40px;
+  background: #88AB8E;
+  border-radius: 12px;
+}
+
+#historySection h2 {
+  color: white;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.history-charts {
+  background: #EEE7DA;
+  padding: 40px;
+  border-radius: 12px;
+  margin-bottom: 40px;
+}
+
+.history-charts canvas {
+  width: 100% !important;
+  height: 300px !important;
+  margin-bottom: 30px;
+}
+
+.history-entries {
+  background: #EEE7DA;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.history-entry {
+  background: white;
+  padding: 18px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+}
+
+.no-history {
+  text-align: center;
+  color: #444;
+}
+
+
 

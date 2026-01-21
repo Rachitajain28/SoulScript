@@ -86,26 +86,29 @@ function calculateEmotionalIndex() {
 
 }
 async function sendToBackend() {
-  const mood = localStorage.getItem("mood");
-  const energy = localStorage.getItem("energy");
-  const questions = localStorage.getItem("questionScore"); 
-  const journalEntry = localStorage.getItem("journalText");
-  const score = localStorage.getItem("emotionalIndex");
+  const token = localStorage.getItem("token");
+  console.log("TOKEN:", localStorage.getItem("token"));
 
-  try {
-    const res = await fetch("http://localhost:5050/api/submit", {
-      method: "POST",
-      headers: {
-    "Content-Type": "application/json",
-  },
-      body: JSON.stringify({ mood, energy, questions, journalEntry, score })
-    });
-    const data = await res.json();
-    console.log("Saved to DB:", data);
-  } catch (err) {
-    console.error("Backend not connected:", err);
-  }
+
+  const body = {
+    mood: localStorage.getItem("mood"),
+    energy: localStorage.getItem("energy"),
+    questions: localStorage.getItem("questionScore"),
+    journalEntry: localStorage.getItem("journalText"),
+    score: localStorage.getItem("emotionalIndex"),
+    sentimentScore: localStorage.getItem("sentimentScore")
+  };
+
+  await fetch("http://localhost:5050/api/submit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify(body)
+  });
 }
+
 
 
 function showResults() {
